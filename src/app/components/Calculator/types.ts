@@ -3,6 +3,8 @@ import type { GradeScale, UniversityInfo } from "../../data/universities";
 export type CourseEntry = {
   credits: number | "";
   grade: string;
+  // Optional numeric score (0-100). Used when a university provides numeric->grade ranges
+  score?: number | "";
 };
 
 export type CalculatorFormValues = {

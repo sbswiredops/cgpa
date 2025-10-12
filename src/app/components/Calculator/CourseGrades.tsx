@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import type {
-  FieldArrayWithId,
-  UseFormReturn,
-} from "react-hook-form";
+import type { FieldArrayWithId, UseFormReturn } from "react-hook-form";
 import type { CalculatorFormValues } from "./types";
 
 const MAX_COURSES = 12;
@@ -50,7 +47,8 @@ export default function CourseGrades({
     <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
       <h2 className="text-lg font-semibold text-slate-900">Course Grades</h2>
       <p className="mt-2 text-sm text-slate-500">
-        Enter each course’s credit hours and grade to calculate your semester GPA.
+        Enter each course’s credit hours and grade to calculate your semester
+        GPA.
       </p>
 
       <div className="mt-6 flex items-center gap-3">
@@ -60,7 +58,10 @@ export default function CourseGrades({
           className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
           {...register("includePrevious")}
         />
-        <label htmlFor="includePrevious" className="text-sm font-medium text-slate-700">
+        <label
+          htmlFor="includePrevious"
+          className="text-sm font-medium text-slate-700"
+        >
           Include Previous Academic Record
         </label>
       </div>
@@ -68,7 +69,10 @@ export default function CourseGrades({
       {includePrevious && (
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="text-sm font-medium text-slate-700" htmlFor="previousCgpa">
+            <label
+              className="text-sm font-medium text-slate-700"
+              htmlFor="previousCgpa"
+            >
               Previous CGPA
             </label>
             <input
@@ -86,11 +90,16 @@ export default function CourseGrades({
               })}
             />
             {errors.previousCgpa && (
-              <p className="mt-1 text-xs text-red-500">{errors.previousCgpa.message}</p>
+              <p className="mt-1 text-xs text-red-500">
+                {errors.previousCgpa.message}
+              </p>
             )}
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-700" htmlFor="previousCredits">
+            <label
+              className="text-sm font-medium text-slate-700"
+              htmlFor="previousCredits"
+            >
               Previous Total Credit Hours
             </label>
             <input
@@ -106,7 +115,9 @@ export default function CourseGrades({
               })}
             />
             {errors.previousCredits && (
-              <p className="mt-1 text-xs text-red-500">{errors.previousCredits.message}</p>
+              <p className="mt-1 text-xs text-red-500">
+                {errors.previousCredits.message}
+              </p>
             )}
           </div>
         </div>
@@ -120,7 +131,10 @@ export default function CourseGrades({
           >
             <div className="flex flex-col gap-4 sm:flex-row">
               <div className="flex-1">
-                <label className="text-sm font-medium text-slate-700" htmlFor={`courseCredits-${index}`}>
+                <label
+                  className="text-sm font-medium text-slate-700"
+                  htmlFor={`courseCredits-${index}`}
+                >
                   Credit Hours
                 </label>
                 <input
@@ -131,7 +145,10 @@ export default function CourseGrades({
                   className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   {...register(`courses.${index}.credits` as const, {
                     valueAsNumber: true,
-                    min: { value: 0.25, message: "Enter at least 0.25 credit hours" },
+                    min: {
+                      value: 0.25,
+                      message: "Enter at least 0.25 credit hours",
+                    },
                   })}
                 />
                 {errors.courses?.[index]?.credits && (
@@ -141,7 +158,10 @@ export default function CourseGrades({
                 )}
               </div>
               <div className="flex-1">
-                <label className="text-sm font-medium text-slate-700" htmlFor={`courseGrade-${index}`}>
+                <label
+                  className="text-sm font-medium text-slate-700"
+                  htmlFor={`courseGrade-${index}`}
+                >
                   Grade
                 </label>
                 <select
@@ -161,6 +181,33 @@ export default function CourseGrades({
                 {errors.courses?.[index]?.grade && (
                   <p className="mt-1 text-xs text-red-500">
                     {errors.courses[index]?.grade?.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="flex-1">
+                <label
+                  className="text-sm font-medium text-slate-700"
+                  htmlFor={`courseScore-${index}`}
+                >
+                  Numeric Score (optional)
+                </label>
+                <input
+                  id={`courseScore-${index}`}
+                  type="number"
+                  step="1"
+                  min="0"
+                  max="100"
+                  placeholder="e.g. 85"
+                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  {...register(`courses.${index}.score` as const, {
+                    valueAsNumber: true,
+                    min: { value: 0, message: "Score must be 0 or higher" },
+                    max: { value: 100, message: "Score cannot exceed 100" },
+                  })}
+                />
+                {errors.courses?.[index]?.score && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.courses[index]?.score?.message as string}
                   </p>
                 )}
               </div>
@@ -204,11 +251,15 @@ export default function CourseGrades({
           Save Calculation
         </button>
         {fields.length >= MAX_COURSES && (
-          <p className="text-xs text-slate-500">Maximum of {MAX_COURSES} courses supported.</p>
+          <p className="text-xs text-slate-500">
+            Maximum of {MAX_COURSES} courses supported.
+          </p>
         )}
       </div>
       {saveMessage && (
-        <p className="mt-4 text-sm font-semibold text-emerald-600">{saveMessage}</p>
+        <p className="mt-4 text-sm font-semibold text-emerald-600">
+          {saveMessage}
+        </p>
       )}
     </div>
   );

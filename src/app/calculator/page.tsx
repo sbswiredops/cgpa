@@ -9,6 +9,7 @@ import UniversitySelect from "../components/Calculator/UniversitySelect";
 import CourseGrades from "../components/Calculator/CourseGrades";
 import Results from "../components/Calculator/Results";
 import { universities } from "../data/universities";
+import { computeGpa } from "../../lib/gpa";
 import type {
   CalculatorFormValues,
   CalculationSnapshot,
@@ -21,19 +22,26 @@ const defaultValues: CalculatorFormValues = {
   previousCgpa: "",
   previousCredits: "",
   courses: [
-    { credits: "", grade: "" },
-    { credits: "", grade: "" },
-    { credits: "", grade: "" },
+    { credits: "", grade: "", score: "" },
+    { credits: "", grade: "", score: "" },
+    { credits: "", grade: "", score: "" },
   ],
 };
 
 export default function CalculatorPage() {
-  const [selectedUniversityId, setSelectedUniversityId] = useState(defaultUniversity.id);
+  const [selectedUniversityId, setSelectedUniversityId] = useState(
+    defaultUniversity.id
+  );
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
-  const [lastSnapshot, setLastSnapshot] = useState<CalculationSnapshot | null>(null);
+  const [lastSnapshot, setLastSnapshot] = useState<CalculationSnapshot | null>(
+    null
+  );
 
   const selectedUniversity = useMemo(
-    () => universities.find((university) => university.id === selectedUniversityId) ?? defaultUniversity,
+    () =>
+      universities.find(
+        (university) => university.id === selectedUniversityId
+      ) ?? defaultUniversity,
     [selectedUniversityId]
   );
 
@@ -55,16 +63,23 @@ export default function CalculatorPage() {
   const previousCredits = watch("previousCredits");
 
   const gradeMap = useMemo(() => {
-    const entries = selectedUniversity.gradingScale.map((item) => [item.grade, item.point] as const);
+    const entries = selectedUniversity.gradingScale.map(
+      (item) => [item.grade, item.point] as const
+    );
     return new Map(entries);
   }, [selectedUniversity]);
 
   useEffect(() => {
-    const allowedGrades = new Set(selectedUniversity.gradingScale.map((scale) => scale.grade));
+    const allowedGrades = new Set(
+      selectedUniversity.gradingScale.map((scale) => scale.grade)
+    );
     const currentCourses = getValues("courses");
     currentCourses.forEach((course, index) => {
       if (course.grade && !allowedGrades.has(course.grade)) {
-        setValue(`courses.${index}.grade`, "", { shouldValidate: true, shouldDirty: true });
+        setValue(`courses.${index}.grade`, "", {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
       }
     });
   }, [selectedUniversity, getValues, setValue]);
@@ -74,56 +89,33 @@ export default function CalculatorPage() {
     [selectedUniversity]
   );
 
-  const { currentGpa, cumulativeGpa, currentCredits, totalCredits, interpretation } = useMemo(() => {
-    let qualityPoints = 0;
-    let creditSum = 0;
-
-    courses.forEach((course) => {
-      if (typeof course.credits === "number" && !Number.isNaN(course.credits) && course.credits > 0) {
-        const point = gradeMap.get(course.grade) ?? null;
-        if (point !== null) {
-          qualityPoints += course.credits * point;
-          creditSum += course.credits;
-        }
-      }
-    });
-
-    const current = creditSum > 0 ? qualityPoints / creditSum : null;
-
-    const hasPrevious =
-      includePrevious &&
-      typeof previousCgpa === "number" &&
-      !Number.isNaN(previousCgpa) &&
-      typeof previousCredits === "number" &&
-      !Number.isNaN(previousCredits) &&
-      previousCredits > 0;
-
-    const previousQuality = hasPrevious ? previousCgpa * (previousCredits as number) : 0;
-    const cumulativeCreditTotal = creditSum + (hasPrevious ? (previousCredits as number) : 0);
-    const cumulative = cumulativeCreditTotal > 0 ? (previousQuality + qualityPoints) / cumulativeCreditTotal : null;
-
-    const interpretationValue = cumulative ?? current;
-    let message = "Add your courses to see a detailed interpretation.";
-    if (typeof interpretationValue === "number") {
-      if (interpretationValue >= 3.75) {
-        message = "Outstanding academic standing. Keep up the excellent work!";
-      } else if (interpretationValue >= 3.3) {
-        message = "Strong performance with room for targeted improvements.";
-      } else if (interpretationValue >= 2.5) {
-        message = "Satisfactory progress. Consider meeting an advisor to plan the next steps.";
-      } else {
-        message = "At-risk standing. Consult your academic advisor for support.";
-      }
-    }
-
-    return {
-      currentGpa: current,
-      cumulativeGpa: cumulative,
-      currentCredits: creditSum,
-      totalCredits: cumulativeCreditTotal,
-      interpretation: message,
-    };
-  }, [courses, gradeMap, includePrevious, previousCgpa, previousCredits]);
+  const {
+    currentGpa,
+    cumulativeGpa,
+    currentCredits,
+    totalCredits,
+    interpretation,
+  } = useMemo(
+    () =>
+      computeGpa(
+        courses,
+        gradeMap,
+        includePrevious,
+        previousCgpa,
+        previousCredits,
+        selectedUniversity.numericRanges,
+        selectedUniversity.rules
+      ),
+    [
+      courses,
+      gradeMap,
+      includePrevious,
+      previousCgpa,
+      previousCredits,
+      selectedUniversity.numericRanges,
+      selectedUniversity.rules,
+    ]
+  );
 
   const handleAddCourse = () => {
     append({ credits: "", grade: "" });
@@ -149,8 +141,13 @@ export default function CalculatorPage() {
       university: selectedUniversity,
     };
     setLastSnapshot(snapshot);
-    const savedTime = snapshot.savedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    setSaveMessage(`Saved at ${savedTime} for ${selectedUniversity.shortName}.`);
+    const savedTime = snapshot.savedAt.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    setSaveMessage(
+      `Saved at ${savedTime} for ${selectedUniversity.shortName}.`
+    );
   };
 
   return (
@@ -187,7 +184,12 @@ export default function CalculatorPage() {
               totalCredits={totalCredits}
               includePrevious={includePrevious}
               gradeInterpretation={interpretation}
-              previousCredits={typeof previousCredits === "number" && !Number.isNaN(previousCredits) ? previousCredits : 0}
+              previousCredits={
+                typeof previousCredits === "number" &&
+                !Number.isNaN(previousCredits)
+                  ? previousCredits
+                  : 0
+              }
               lastSavedMessage={saveMessage}
               lastSnapshot={lastSnapshot}
             />
