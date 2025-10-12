@@ -152,7 +152,6 @@ export default function CalculatorPage() {
     setLastSnapshot(snapshot);
     const savedTime = snapshot.savedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     setSaveMessage(`Saved at ${savedTime} for ${selectedUniversity.shortName}.`);
-    setValue("includePrevious", values.includePrevious, { shouldDirty: false });
   };
 
   return (
