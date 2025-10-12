@@ -145,6 +145,7 @@ export default function CourseGrades({
                     step="0.5"
                     min="0"
                     className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                    defaultValue={(field as any).credits ?? ""}
                     {...register(`courses.${index}.credits` as const, {
                       valueAsNumber: true,
                       min: {
@@ -170,6 +171,7 @@ export default function CourseGrades({
                   <select
                     id={`courseGrade-${index}`}
                     className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                    defaultValue={(field as any).grade ?? ""}
                     {...register(`courses.${index}.grade` as const, {
                       required: "Select a grade",
                     })}
@@ -205,6 +207,7 @@ export default function CourseGrades({
                   max="100"
                   placeholder="e.g. 85"
                   className="mt-2 w-full max-w-xs rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  defaultValue={(field as any).score ?? ""}
                   {...register(`courses.${index}.score` as const, {
                     valueAsNumber: true,
                     min: { value: 0, message: "Score must be 0 or higher" },
