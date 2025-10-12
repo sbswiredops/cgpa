@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import GradingScale from "../components/Calculator/GradingScale";
@@ -57,7 +57,7 @@ export default function CalculatorPage() {
     name: "courses",
   });
 
-  const courses = watch("courses");
+  const courses = useWatch({ control, name: "courses" });
   const includePrevious = watch("includePrevious");
   const previousCgpa = watch("previousCgpa");
   const previousCredits = watch("previousCredits");
