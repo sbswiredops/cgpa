@@ -140,7 +140,6 @@ export default function CalculatorPage() {
   };
 
   const handleSave = () => {
-    const values = getValues();
     const snapshot: CalculationSnapshot = {
       currentCredits,
       currentGpa: currentGpa ?? 0,
