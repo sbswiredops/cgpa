@@ -191,6 +191,7 @@ export default function CalculatorPage() {
               gradeInterpretation={interpretation}
               previousCredits={typeof previousCredits === "number" && !Number.isNaN(previousCredits) ? previousCredits : 0}
               lastSavedMessage={saveMessage}
+              lastSnapshot={lastSnapshot}
             />
           </div>
         </section>
