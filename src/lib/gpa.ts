@@ -20,6 +20,7 @@ export type UniversityRules = {
     excludeFailFromDenominator?: boolean;
     earnedGradeMin?: string; // letter grade threshold to count earned credits
     degreeRequirementCgpa?: number;
+    attemptGrades?: string[]; // which letter grades count as attempted credits
 };
 
 export function computeGpa(
@@ -46,12 +47,16 @@ export function computeGpa(
                 : Number(String(rawCredits).trim());
         const credits = typeof creditsParsed === "number" && !Number.isNaN(creditsParsed) ? creditsParsed : NaN;
         if (!Number.isNaN(credits) && credits > 0) {
-            // If a numeric score was provided and numericRanges are available, map score -> grade
+            // If a numeric score was provided (non-empty) and numericRanges are available, map score -> grade
             let gradeToLookup = course.grade;
-            if (course.score !== undefined && course.score !== null && numericRanges) {
+            const hasScore =
+                course.score !== undefined &&
+                course.score !== null &&
+                String(course.score).trim() !== "";
+            if (hasScore && numericRanges) {
                 const rawScore = typeof course.score === "number" ? course.score : Number(course.score);
-                if (!Number.isNaN(Number(rawScore))) {
-                    const matched = numericRanges.find((r) => rawScore >= r.min && rawScore <= r.max);
+                if (Number.isFinite(rawScore as number)) {
+                    const matched = numericRanges.find((r) => (rawScore as number) >= r.min && (rawScore as number) <= r.max);
                     if (matched) gradeToLookup = matched.grade;
                 }
             }
