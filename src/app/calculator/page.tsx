@@ -22,9 +22,9 @@ const defaultValues: CalculatorFormValues = {
   previousCgpa: "",
   previousCredits: "",
   courses: [
-    { credits: "", grade: "", score: "" },
-    { credits: "", grade: "", score: "" },
-    { credits: "", grade: "", score: "" },
+    { credits: "", grade: "", score: undefined },
+    { credits: "", grade: "", score: undefined },
+    { credits: "", grade: "", score: undefined },
   ],
 };
 
