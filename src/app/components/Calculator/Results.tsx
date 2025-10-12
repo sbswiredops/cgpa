@@ -1,3 +1,5 @@
+import type { CalculationSnapshot } from "./types";
+
 type ResultsProps = {
   currentGpa: number | null;
   currentCredits: number;
@@ -7,6 +9,7 @@ type ResultsProps = {
   gradeInterpretation: string;
   previousCredits: number;
   lastSavedMessage: string | null;
+  lastSnapshot: CalculationSnapshot | null;
 };
 
 const instructions = [
@@ -25,6 +28,7 @@ export default function Results({
   gradeInterpretation,
   previousCredits,
   lastSavedMessage,
+  lastSnapshot,
 }: ResultsProps) {
   return (
     <aside className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -77,9 +81,12 @@ export default function Results({
         </div>
       </div>
 
-      {lastSavedMessage && (
-        <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm font-semibold text-emerald-700">
-          {lastSavedMessage}
+      {lastSnapshot && (
+        <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm text-emerald-700">
+          <p className="font-semibold">{lastSavedMessage ?? "Calculation saved."}</p>
+          <p className="mt-1 text-xs text-emerald-600">
+            Cumulative CGPA: {lastSnapshot.cumulativeGpa !== null ? lastSnapshot.cumulativeGpa.toFixed(2) : "--"} · Current GPA: {lastSnapshot.currentGpa.toFixed(2)} · Credits: {lastSnapshot.totalCredits.toFixed(2)}
+          </p>
         </div>
       )}
     </aside>
