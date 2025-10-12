@@ -1,22 +1,9 @@
 import Link from "next/link";
-
-type University = {
-  name: string;
-  shortName: string;
-};
-
-const universities: University[] = [
-  { name: "American International University-Bangladesh", shortName: "AIUB" },
-  { name: "BRAC University", shortName: "BRAC" },
-  { name: "North South University", shortName: "NSU" },
-  { name: "Independent University, Bangladesh", shortName: "IUB" },
-  { name: "East West University", shortName: "EWU" },
-  { name: "United International University", shortName: "UIU" },
-  { name: "Ahsanullah University of Science and Technology", shortName: "AUST" },
-  { name: "Dhaka University", shortName: "DU" },
-];
+import { universities } from "../data/universities";
 
 export default function UniversityGrid() {
+  const featuredUniversities = universities.slice(0, 8);
+
   return (
     <section className="bg-slate-50 py-16" id="universities">
       <div className="mx-auto max-w-6xl px-4">
@@ -37,9 +24,9 @@ export default function UniversityGrid() {
           </Link>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {universities.map((university) => (
+          {featuredUniversities.map((university) => (
             <article
-              key={university.shortName}
+              key={university.id}
               className="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="flex items-center gap-4">
