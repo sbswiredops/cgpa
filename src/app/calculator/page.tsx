@@ -118,7 +118,7 @@ export default function CalculatorPage() {
   );
 
   const handleAddCourse = () => {
-    append({ credits: "", grade: "", score: "" });
+    append({ credits: "", grade: "", score: undefined });
   };
 
   const handleRemoveCourse = (index: number) => {
