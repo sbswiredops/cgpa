@@ -131,7 +131,7 @@ export default function CourseGrades({
                   className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   {...register(`courses.${index}.credits` as const, {
                     valueAsNumber: true,
-                    min: { value: 0, message: "Enter a positive value" },
+                    min: { value: 0.25, message: "Enter at least 0.25 credit hours" },
                   })}
                 />
                 {errors.courses?.[index]?.credits && (
