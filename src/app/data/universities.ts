@@ -173,12 +173,148 @@ const austNumericRanges = [
   { grade: "F", min: 0, max: 39.999 },
 ];
 
+// DIU grading scale (as provided)
+const diuScale: GradeScale[] = [
+  { grade: "A+", point: 4.0 },
+  { grade: "A", point: 3.75 },
+  { grade: "A-", point: 3.5 },
+  { grade: "B+", point: 3.25 },
+  { grade: "B", point: 3.0 },
+  { grade: "B-", point: 2.75 },
+  { grade: "C+", point: 2.5 },
+  { grade: "C", point: 2.25 },
+  { grade: "C-", point: 2.0 },
+  { grade: "D+", point: 1.75 },
+  { grade: "D", point: 1.5 },
+  { grade: "F", point: 0.0 },
+];
+
+// AUB grading scale (matches mapping provided by user)
+const aubScale: GradeScale[] = [
+  { grade: "A+", point: 4.0 },
+  { grade: "A", point: 3.75 },
+  { grade: "A-", point: 3.5 },
+  { grade: "B+", point: 3.25 },
+  { grade: "B", point: 3.0 },
+  { grade: "B-", point: 2.75 },
+  { grade: "C+", point: 2.5 },
+  { grade: "C", point: 2.25 },
+  { grade: "D", point: 2.0 },
+  { grade: "F", point: 0.0 },
+];
+
+// CWU grading scale (same mapping as DIU / standard 4.0 variant)
+const cwuScale: GradeScale[] = [
+  { grade: "A+", point: 4.0 },
+  { grade: "A", point: 3.75 },
+  { grade: "A-", point: 3.5 },
+  { grade: "B+", point: 3.25 },
+  { grade: "B", point: 3.0 },
+  { grade: "B-", point: 2.75 },
+  { grade: "C+", point: 2.5 },
+  { grade: "C", point: 2.25 },
+  { grade: "D", point: 2.0 },
+  { grade: "F", point: 0.0 },
+];
+
+// IUBAT grading scale (matches provided mapping)
+const iubatScale: GradeScale[] = [
+  { grade: "A+", point: 4.0 },
+  { grade: "A", point: 3.75 },
+  { grade: "A-", point: 3.5 },
+  { grade: "B+", point: 3.25 },
+  { grade: "B", point: 3.0 },
+  { grade: "B-", point: 2.75 },
+  { grade: "C+", point: 2.5 },
+  { grade: "C", point: 2.25 },
+  { grade: "D", point: 2.0 },
+  { grade: "F", point: 0.0 },
+];
+
+// IIUC grading scale and numeric ranges (UGC uniform mapping)
+const iiucScale: GradeScale[] = [
+  { grade: "A+", point: 4.0, description: "80-100 — Excellent" },
+  { grade: "A", point: 3.75, description: "75-79 — Very Good" },
+  { grade: "A-", point: 3.5, description: "70-74" },
+  { grade: "B+", point: 3.25, description: "65-69 — Good" },
+  { grade: "B", point: 3.0, description: "60-64" },
+  { grade: "B-", point: 2.75, description: "55-59 — Satisfactory" },
+  { grade: "C+", point: 2.5, description: "50-54" },
+  { grade: "C", point: 2.25, description: "45-49 — Pass" },
+  { grade: "D", point: 2.0, description: "40-44" },
+  { grade: "F", point: 0.0, description: "0-39 — Fail" },
+];
+
+const iiucNumericRanges = [
+  { grade: "A+", min: 80, max: 100 },
+  { grade: "A", min: 75, max: 79.999 },
+  { grade: "A-", min: 70, max: 74.999 },
+  { grade: "B+", min: 65, max: 69.999 },
+  { grade: "B", min: 60, max: 64.999 },
+  { grade: "B-", min: 55, max: 59.999 },
+  { grade: "C+", min: 50, max: 54.999 },
+  { grade: "C", min: 45, max: 49.999 },
+  { grade: "D", min: 40, max: 44.999 },
+  { grade: "F", min: 0, max: 39.999 },
+];
+
+// UAP grading scale (UGC uniform mapping with E/I administrative grades)
+const uapScale: GradeScale[] = [
+  { grade: "A+", point: 4.0, description: "80% and above" },
+  { grade: "A", point: 3.75, description: "75% to less than 80%" },
+  { grade: "A-", point: 3.5, description: "70% to less than 75%" },
+  { grade: "B+", point: 3.25, description: "65% to less than 70%" },
+  { grade: "B", point: 3.0, description: "60% to less than 65%" },
+  { grade: "B-", point: 2.75, description: "55% to less than 60%" },
+  { grade: "C+", point: 2.5, description: "50% to less than 55%" },
+  { grade: "C", point: 2.25, description: "45% to less than 50%" },
+  { grade: "D", point: 2.0, description: "40% to less than 45%" },
+  { grade: "F", point: 0.0, description: "Less than 40% — Failure" },
+  { grade: "E", point: 0.0, description: "Exemption (administrative)" },
+  { grade: "I", point: 0.0, description: "Incomplete (administrative)" },
+];
+
+const uapNumericRanges = [
+  { grade: "A+", min: 80, max: 100 },
+  { grade: "A", min: 75, max: 79.999 },
+  { grade: "A-", min: 70, max: 74.999 },
+  { grade: "B+", min: 65, max: 69.999 },
+  { grade: "B", min: 60, max: 64.999 },
+  { grade: "B-", min: 55, max: 59.999 },
+  { grade: "C+", min: 50, max: 54.999 },
+  { grade: "C", min: 45, max: 49.999 },
+  { grade: "D", min: 40, max: 44.999 },
+  { grade: "F", min: 0, max: 39.999 },
+];
+
 export const universities: UniversityInfo[] = [
   {
     id: "aiub",
     name: "American International University-Bangladesh",
     shortName: "AIUB",
     gradingScale: standardScale,
+    rules: {
+      attemptGrades: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"],
+      earnedGradeMin: "D",
+    },
+  },
+  {
+    id: "uap",
+    name: "University of Asia Pacific",
+    shortName: "UAP",
+    gradingScale: uapScale,
+    numericRanges: uapNumericRanges,
+    rules: {
+      attemptGrades: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "D", "F", "E", "I"],
+      earnedGradeMin: "D",
+    },
+  },
+  {
+    id: "iiuc",
+    name: "International Islamic University Chittagong",
+    shortName: "IIUC",
+    gradingScale: iiucScale,
+    numericRanges: iiucNumericRanges,
     rules: {
       attemptGrades: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"],
       earnedGradeMin: "D",
@@ -296,5 +432,60 @@ export const universities: UniversityInfo[] = [
     name: "Dhaka University",
     shortName: "DU",
     gradingScale: standardScale,
+  },
+  {
+    id: "diu",
+    name: "Daffodil International University",
+    shortName: "DIU",
+    gradingScale: aubScale,
+    rules: {
+      attemptGrades: [
+        "A+",
+        "A",
+        "A-",
+        "B+",
+        "B",
+        "B-",
+        "C+",
+        "C",
+        "C-",
+        "D+",
+        "D",
+        "F",
+      ],
+      earnedGradeMin: "D",
+    },
+  },
+  {
+    id: "cwu",
+    name: "Central Women's University",
+    shortName: "CWU",
+    gradingScale: cwuScale,
+    rules: {
+      attemptGrades: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"],
+      earnedGradeMin: "D",
+    },
+  },
+  {
+    id: "iubat",
+    name: "International University of Business Agriculture and Technology",
+    shortName: "IUBAT",
+    gradingScale: iubatScale,
+    rules: {
+      attemptGrades: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"],
+      earnedGradeMin: "D",
+    },
+  },
+  {
+    id: "aub",
+    name: "Asian University of Bangladesh",
+    shortName: "AUB",
+    gradingScale: aubScale,
+    // Provide a short calculation guide helpful for users — based on the user's provided text
+    calculationGuide: `Understanding Asian University of Bangladesh’s Grading System\n\nBefore calculating your CGPA, it's important to know how Asian University of Bangladesh (AUB) grades students. Here’s the grading scale:\n\nGrade\tGrade Point\nA+\t4.00\nA\t3.75\nA-\t3.50\nB+\t3.25\nB\t3.00\nB-\t2.75\nC+\t2.50\nC\t2.25\nD\t2.00\nF\t0.00\n\nEach course has a certain number of credit hours. This shows how much the course affects your CGPA. For example, a 4-credit-hour course impacts your CGPA more than a 3-credit-hour course. It’s important to understand this when calculating your CGPA or using an online calculator.\n\nAUB uses a weighted grading system. This means courses with more credit hours affect your CGPA more. Core subjects, which usually have more credit hours, carry more weight.\n\nFormula for Calculating CGPA Manually\nCGPA = Total Grade Points ÷ Total Credit Hours\n\nExample:\nSubject\tCredit Hours\tGrade\tGrade Point\tTotal Grade Points\nMath\t3\tA\t3.75\t11.25\nEnglish\t3\tB+\t3.25\t9.75\nProgramming\t4\tA-\t3.50\t14.00\nPhysics\t3\tB\t3.00\t9.00\nTotal Credit Hours: 3 + 3 + 4 + 3 = 13\nTotal Grade Points: 11.25 + 9.75 + 14.00 + 9.00 = 44.00\nCGPA: 44.00 ÷ 13 = 3.38\n\nThis method works well but can be slow and easy to mess up, especially with many courses. Many students prefer automated tools for faster, more accurate results.`,
+    rules: {
+      attemptGrades: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"],
+      earnedGradeMin: "D",
+    },
   },
 ];
