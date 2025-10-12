@@ -32,8 +32,9 @@ export function computeGpa(
     rules?: UniversityRules
 ): ComputeResult {
     let qualityPoints = 0;
-    let creditSum = 0; // denominator for GPA
+    let creditSum = 0; // denominator for GPA (may exclude fails per rules)
     let earnedCredits = 0; // credits counted as earned (grade >= earnedGradeMin)
+    let attemptedCredits = 0; // credits attempted this semester (policy-aware)
 
     for (let i = 0; i < courses.length; i++) {
         const course = courses[i];
@@ -58,6 +59,12 @@ export function computeGpa(
             const gradeKey = gradeToLookup !== undefined && gradeToLookup !== null ? String(gradeToLookup).trim() : "";
             const point = gradeMap.get(gradeKey) ?? null;
             if (point !== null) {
+                // Attempted credits: if policy specifies attemptGrades, use it; otherwise, count all mapped letter grades
+                const isAttempted = Array.isArray((rules as any)?.attemptGrades)
+                    ? ((rules as any).attemptGrades as string[]).includes(gradeKey)
+                    : true;
+                if (isAttempted) attemptedCredits += credits;
+
                 // Add quality points regardless; point may be 0 for F
                 qualityPoints += credits * point;
 
@@ -112,7 +119,7 @@ export function computeGpa(
     return {
         currentGpa: current,
         cumulativeGpa: cumulative,
-        currentCredits: earnedCredits,
+        currentCredits: attemptedCredits,
         totalCredits: cumulativeCreditTotal,
         interpretation: message,
     };
