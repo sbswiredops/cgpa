@@ -41,7 +41,7 @@ export default function UniversityGrid() {
                 <span className="text-sm text-slate-500">Official scale ready</span>
                 <Link
                   href="/calculator"
-                  className="rounded-xl border border-transparent px-3 py-2 text-sm font-semibold text-blue-600 transition hover:border-blue-200 hover:bg-blue-50"
+                  className="rounded-2xl border border-transparent px-3 py-2 text-sm font-semibold text-blue-600 transition hover:border-blue-200 hover:bg-blue-50"
                 >
                   Start
                 </Link>
