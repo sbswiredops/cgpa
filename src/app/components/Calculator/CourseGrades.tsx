@@ -5,10 +5,7 @@ import type {
   FieldArrayWithId,
   UseFormReturn,
 } from "react-hook-form";
-import type {
-  CalculatorFormValues,
-  CourseEntry,
-} from "./types";
+import type { CalculatorFormValues } from "./types";
 
 const MAX_COURSES = 12;
 
@@ -17,7 +14,7 @@ type CourseGradesProps = {
   fields: FieldArrayWithId<CalculatorFormValues, "courses", "id">[];
   onAddCourse: () => void;
   onRemoveCourse: (index: number) => void;
-  gradeOptions: CourseEntry["grade"][];
+  gradeOptions: string[];
   onSaveCalculation: () => void;
   onResetAll: () => void;
   saveMessage: string | null;
