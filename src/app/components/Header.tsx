@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const navigationLinks = [
   { label: "Home", href: "/" },
@@ -12,7 +11,6 @@ const navigationLinks = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
 
   const toggleMenu = () => setIsMenuOpen((previous) => !previous);
   const closeMenu = () => setIsMenuOpen(false);
@@ -58,21 +56,16 @@ export default function Header() {
       {isMenuOpen && (
         <div className="border-t border-slate-200 bg-white px-4 py-4 md:hidden">
           <nav className="flex flex-col gap-3 text-base font-medium text-slate-600">
-            {navigationLinks.map((link) => {
-              const isActive = link.href !== "/" && pathname.includes(link.href.replace("#", "/"));
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={`rounded-xl px-3 py-2 transition hover:bg-blue-50 hover:text-blue-600 ${
-                    pathname === link.href || isActive ? "bg-blue-50 text-blue-600" : ""
-                  }`}
-                  onClick={closeMenu}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            {navigationLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="rounded-xl px-3 py-2 transition hover:bg-blue-50 hover:text-blue-600"
+                onClick={closeMenu}
+              >
+                {link.label}
+              </Link>
+            ))}
             <Link
               href="/calculator"
               className="rounded-2xl bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
