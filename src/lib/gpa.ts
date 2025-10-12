@@ -35,21 +35,28 @@ export function computeGpa(
     let creditSum = 0; // denominator for GPA
     let earnedCredits = 0; // credits counted as earned (grade >= earnedGradeMin)
 
-    courses.forEach((course) => {
+    for (let i = 0; i < courses.length; i++) {
+        const course = courses[i];
         const rawCredits = course.credits as any;
-        const credits = typeof rawCredits === "number" ? rawCredits : Number(rawCredits);
-        if (typeof credits === "number" && !Number.isNaN(credits) && credits > 0) {
+        // Robustly parse credits: accept numbers or numeric strings with whitespace
+        const creditsParsed =
+            rawCredits === undefined || rawCredits === null
+                ? NaN
+                : Number(String(rawCredits).trim());
+        const credits = typeof creditsParsed === "number" && !Number.isNaN(creditsParsed) ? creditsParsed : NaN;
+        if (!Number.isNaN(credits) && credits > 0) {
             // If a numeric score was provided and numericRanges are available, map score -> grade
             let gradeToLookup = course.grade;
-            if ((course.score !== undefined || course.score !== null) && numericRanges) {
+            if (course.score !== undefined && course.score !== null && numericRanges) {
                 const rawScore = typeof course.score === "number" ? course.score : Number(course.score);
-                if (typeof rawScore === "number" && !Number.isNaN(rawScore)) {
+                if (!Number.isNaN(Number(rawScore))) {
                     const matched = numericRanges.find((r) => rawScore >= r.min && rawScore <= r.max);
                     if (matched) gradeToLookup = matched.grade;
                 }
             }
 
-            const point = gradeMap.get(String(gradeToLookup)) ?? null;
+            const gradeKey = gradeToLookup !== undefined && gradeToLookup !== null ? String(gradeToLookup).trim() : "";
+            const point = gradeMap.get(gradeKey) ?? null;
             if (point !== null) {
                 // Add quality points regardless; point may be 0 for F
                 qualityPoints += credits * point;
@@ -69,7 +76,7 @@ export function computeGpa(
                 }
             }
         }
-    });
+    }
 
     const current = creditSum > 0 ? qualityPoints / creditSum : null;
 

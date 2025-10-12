@@ -129,62 +129,68 @@ export default function CourseGrades({
             key={field.id}
             className="rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm transition-all"
           >
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <div className="flex-1">
-                <label
-                  className="text-sm font-medium text-slate-700"
-                  htmlFor={`courseCredits-${index}`}
-                >
-                  Credit Hours
-                </label>
-                <input
-                  id={`courseCredits-${index}`}
-                  type="number"
-                  step="0.5"
-                  min="0"
-                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                  {...register(`courses.${index}.credits` as const, {
-                    valueAsNumber: true,
-                    min: {
-                      value: 0.25,
-                      message: "Enter at least 0.25 credit hours",
-                    },
-                  })}
-                />
-                {errors.courses?.[index]?.credits && (
-                  <p className="mt-1 text-xs text-red-500">
-                    {errors.courses[index]?.credits?.message as string}
-                  </p>
-                )}
+            <div className="flex flex-col gap-4">
+              {/* Top row: Credit Hours + Grade */}
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="flex-1">
+                  <label
+                    className="text-sm font-medium text-slate-700"
+                    htmlFor={`courseCredits-${index}`}
+                  >
+                    Credit Hours
+                  </label>
+                  <input
+                    id={`courseCredits-${index}`}
+                    type="number"
+                    step="0.5"
+                    min="0"
+                    className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                    {...register(`courses.${index}.credits` as const, {
+                      valueAsNumber: true,
+                      min: {
+                        value: 0.25,
+                        message: "Enter at least 0.25 credit hours",
+                      },
+                    })}
+                  />
+                  {errors.courses?.[index]?.credits && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.courses[index]?.credits?.message as string}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex-1">
+                  <label
+                    className="text-sm font-medium text-slate-700"
+                    htmlFor={`courseGrade-${index}`}
+                  >
+                    Grade
+                  </label>
+                  <select
+                    id={`courseGrade-${index}`}
+                    className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                    {...register(`courses.${index}.grade` as const, {
+                      required: "Select a grade",
+                    })}
+                  >
+                    <option value="">Select grade</option>
+                    {gradeOptions.map((grade) => (
+                      <option key={grade} value={grade}>
+                        {grade}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.courses?.[index]?.grade && (
+                    <p className="mt-1 text-xs text-red-500">
+                      {errors.courses[index]?.grade?.message as string}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="flex-1">
-                <label
-                  className="text-sm font-medium text-slate-700"
-                  htmlFor={`courseGrade-${index}`}
-                >
-                  Grade
-                </label>
-                <select
-                  id={`courseGrade-${index}`}
-                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                  {...register(`courses.${index}.grade` as const, {
-                    required: "Select a grade",
-                  })}
-                >
-                  <option value="">Select grade</option>
-                  {gradeOptions.map((grade) => (
-                    <option key={grade} value={grade}>
-                      {grade}
-                    </option>
-                  ))}
-                </select>
-                {errors.courses?.[index]?.grade && (
-                  <p className="mt-1 text-xs text-red-500">
-                    {errors.courses[index]?.grade?.message as string}
-                  </p>
-                )}
-              </div>
-              <div className="flex-1">
+
+              {/* Second row: Numeric Score */}
+              <div>
                 <label
                   className="text-sm font-medium text-slate-700"
                   htmlFor={`courseScore-${index}`}
@@ -198,7 +204,7 @@ export default function CourseGrades({
                   min="0"
                   max="100"
                   placeholder="e.g. 85"
-                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  className="mt-2 w-full max-w-xs rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   {...register(`courses.${index}.score` as const, {
                     valueAsNumber: true,
                     min: { value: 0, message: "Score must be 0 or higher" },
