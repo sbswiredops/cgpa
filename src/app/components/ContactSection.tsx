@@ -11,10 +11,12 @@ export default function ContactSection() {
           Are You a University Representative?
         </h2>
         <p className="max-w-2xl text-base text-slate-600">
-          Contact us to add or customize your university’s CGPA grading scale. We collaborate closely with academic departments to ensure every calculation reflects the latest policies.
+          Contact us to add or customize your university’s CGPA grading scale.
+          We collaborate closely with academic departments to ensure every
+          calculation reflects the latest policies.
         </p>
         <Link
-          href="mailto:hello@unigpa.com"
+          href="mailto:contact@orbit25.com"
           className="rounded-2xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
         >
           Contact Us

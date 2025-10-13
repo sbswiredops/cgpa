@@ -12,7 +12,9 @@ export default function Hero() {
             Calculate Your University CGPA Easily!
           </h1>
           <p className="mt-4 text-lg text-slate-600">
-            Instantly compute your GPA using your university’s official grading scale. Save time, stay on track, and understand exactly where you stand each semester.
+            Instantly compute your GPA using your university’s official grading
+            scale. Save time, stay on track, and understand exactly where you
+            stand each semester.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -33,7 +35,7 @@ export default function Hero() {
           <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white shadow-sm">
-                UniGPA Snapshot
+                Bangladesh Private University Hub Snapshot
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-500">
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
@@ -70,9 +72,15 @@ export default function Hero() {
                 </div>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                <p className="text-xs uppercase tracking-wide text-slate-500">Current Estimate</p>
-                <p className="mt-2 text-4xl font-semibold text-slate-900">3.87</p>
-                <p className="mt-1 text-sm text-slate-500">Projected cumulative CGPA based on current inputs.</p>
+                <p className="text-xs uppercase tracking-wide text-slate-500">
+                  Current Estimate
+                </p>
+                <p className="mt-2 text-4xl font-semibold text-slate-900">
+                  3.87
+                </p>
+                <p className="mt-1 text-sm text-slate-500">
+                  Projected cumulative CGPA based on current inputs.
+                </p>
               </div>
             </div>
             <div className="absolute -right-16 bottom-8 hidden h-32 w-32 rounded-full bg-blue-100/60 blur-2xl lg:block" />

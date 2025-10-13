@@ -7,7 +7,7 @@ import Image from "next/image";
 const navigationLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "https://www.orbit25.com/contact" },
 ];
 
 export default function Header() {
@@ -22,7 +22,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2" onClick={closeMenu}>
           <Image
             src="/logo.png"
-            alt="UniGPA logo"
+            alt="Bangladesh Private University Hub logo"
             width={100}
             height={100}
             className="object-contain rounded"

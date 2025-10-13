@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "UniGPA | CGPA Calculator",
+  title: "Bangladesh Private University Hub | CGPA Calculator",
   description:
     "Instant CGPA calculator with university-specific grading scales and guidance.",
 };
