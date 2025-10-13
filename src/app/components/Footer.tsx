@@ -78,44 +78,6 @@ export default function Footer() {
             <li>153/1 Moishanbari Road, kuratoli, kuril, Dhaka-1229</li>
           </ul>
         </div>
-
-        <div>
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-300">
-            Social Media
-          </h3>
-          <ul className="mt-4 space-y-2 text-sm text-slate-400">
-            <li>
-              <a
-                href="https://www.facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition hover:text-white"
-              >
-                Facebook
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition hover:text-white"
-              >
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition hover:text-white"
-              >
-                LinkedIn
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
       <div className="border-t border-slate-800">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-center text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
@@ -131,14 +93,6 @@ export default function Footer() {
               Orbit25
             </a>
           </p>
-          <div className="flex items-center justify-center gap-4">
-            <a href="#privacy" className="transition hover:text-white">
-              Privacy
-            </a>
-            <a href="#terms" className="transition hover:text-white">
-              Terms
-            </a>
-          </div>
         </div>
       </div>
     </footer>
