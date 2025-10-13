@@ -5,7 +5,10 @@ type GradingScaleProps = {
   gradingScale: GradeScale[];
 };
 
-export default function GradingScale({ universityName, gradingScale }: GradingScaleProps) {
+export default function GradingScale({
+  universityName,
+  gradingScale,
+}: GradingScaleProps) {
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-6xl px-4 pt-12">
@@ -24,17 +27,35 @@ export default function GradingScale({ universityName, gradingScale }: GradingSc
             <table className="min-w-full divide-y divide-slate-200 text-left text-sm text-slate-700">
               <thead className="bg-slate-100 text-xs uppercase tracking-wide text-slate-500">
                 <tr>
-                  <th scope="col" className="px-4 py-3">Grade</th>
-                  <th scope="col" className="px-4 py-3">Point</th>
+                  <th scope="col" className="px-4 py-3">
+                    Grade
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Point
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 bg-white">
-                {gradingScale.map((item) => (
-                  <tr key={item.grade} className="transition hover:bg-blue-50/60">
-                    <td className="px-4 py-3 font-semibold text-slate-900">{item.grade}</td>
-                    <td className="px-4 py-3">{item.point.toFixed(2)}</td>
+                {gradingScale.length === 0 ? (
+                  <tr className="transition">
+                    <td className="px-4 py-3 font-semibold text-slate-900">
+                      —
+                    </td>
+                    <td className="px-4 py-3">0.00</td>
                   </tr>
-                ))}
+                ) : (
+                  gradingScale.map((item) => (
+                    <tr
+                      key={item.grade}
+                      className="transition hover:bg-blue-50/60"
+                    >
+                      <td className="px-4 py-3 font-semibold text-slate-900">
+                        {item.grade}
+                      </td>
+                      <td className="px-4 py-3">{item.point.toFixed(2)}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

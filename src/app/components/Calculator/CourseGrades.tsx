@@ -51,6 +51,16 @@ export default function CourseGrades({
         GPA.
       </p>
 
+      {gradeOptions.length === 0 && (
+        <div
+          role="alert"
+          className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+        >
+          Please select a university to load its grading scale before entering
+          courses.
+        </div>
+      )}
+
       <div className="mt-6 flex items-center gap-3">
         <input
           id="includePrevious"
@@ -82,7 +92,7 @@ export default function CourseGrades({
               min="0"
               max="4"
               placeholder="e.g. 3.45"
-              className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
               {...register("previousCgpa", {
                 valueAsNumber: true,
                 min: { value: 0, message: "Must be 0 or higher" },
@@ -108,7 +118,7 @@ export default function CourseGrades({
               step="0.5"
               min="0"
               placeholder="e.g. 45"
-              className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
               {...register("previousCredits", {
                 valueAsNumber: true,
                 min: { value: 0, message: "Must be 0 or higher" },
@@ -146,7 +156,8 @@ export default function CourseGrades({
                     min="0"
                     className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                     defaultValue={
-                      typeof (field as any).credits === "number" && !Number.isNaN((field as any).credits)
+                      typeof (field as any).credits === "number" &&
+                      !Number.isNaN((field as any).credits)
                         ? (field as any).credits
                         : typeof (field as any).credits === "string"
                         ? (field as any).credits
@@ -214,7 +225,8 @@ export default function CourseGrades({
                   placeholder="e.g. 85"
                   className="mt-2 w-full max-w-xs rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                   defaultValue={
-                    typeof (field as any).score === "number" && !Number.isNaN((field as any).score)
+                    typeof (field as any).score === "number" &&
+                    !Number.isNaN((field as any).score)
                       ? (field as any).score
                       : typeof (field as any).score === "string"
                       ? (field as any).score
@@ -237,7 +249,7 @@ export default function CourseGrades({
               {fields.length > 1 && (
                 <button
                   type="button"
-                  className="text-sm font-semibold text-slate-500 transition hover:text-red-500"
+                  className="text-sm font-semibold text-red-600 transition hover:text-red-800"
                   onClick={() => onRemoveCourse(index)}
                 >
                   Remove
@@ -259,7 +271,7 @@ export default function CourseGrades({
         </button>
         <button
           type="button"
-          className="rounded-2xl border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-200 hover:text-blue-600"
+          className="rounded-2xl border border-red-200 px-5 py-2 text-sm font-semibold text-red-700 shadow-sm transition hover:border-red-300 hover:text-red-800"
           onClick={onResetAll}
         >
           Reset All

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const navigationLinks = [
   { label: "Home", href: "/" },
@@ -19,10 +20,13 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <Link href="/" className="flex items-center gap-2" onClick={closeMenu}>
-          <span className="rounded-2xl bg-blue-600 px-3 py-1 text-sm font-semibold text-white shadow-sm">
-            UniGPA
-          </span>
-          <span className="text-sm font-medium text-slate-500">CGPA Calculator</span>
+          <Image
+            src="/logo.png"
+            alt="UniGPA logo"
+            width={100}
+            height={100}
+            className="object-contain rounded"
+          />
         </Link>
         <nav className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
           {navigationLinks.map((link) => (

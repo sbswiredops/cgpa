@@ -15,8 +15,6 @@ import type {
   CalculationSnapshot,
 } from "../components/Calculator/types";
 
-const defaultUniversity = universities[0];
-
 const defaultValues: CalculatorFormValues = {
   includePrevious: false,
   previousCgpa: "",
@@ -29,21 +27,23 @@ const defaultValues: CalculatorFormValues = {
 };
 
 export default function CalculatorPage() {
-  const [selectedUniversityId, setSelectedUniversityId] = useState(
-    defaultUniversity.id
-  );
+  const defaultUniversity = universities[0];
+
+  // allow empty selection as placeholder
+  const [selectedUniversityId, setSelectedUniversityId] = useState<string>("");
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [lastSnapshot, setLastSnapshot] = useState<CalculationSnapshot | null>(
     null
   );
 
-  const selectedUniversity = useMemo(
-    () =>
+  const selectedUniversity = useMemo(() => {
+    if (!selectedUniversityId) return null;
+    return (
       universities.find(
         (university) => university.id === selectedUniversityId
-      ) ?? defaultUniversity,
-    [selectedUniversityId]
-  );
+      ) ?? defaultUniversity
+    );
+  }, [selectedUniversityId]);
 
   const form = useForm<CalculatorFormValues>({
     defaultValues,
@@ -63,7 +63,7 @@ export default function CalculatorPage() {
   const previousCredits = watch("previousCredits");
 
   const gradeMap = useMemo(() => {
-    const entries = selectedUniversity.gradingScale.map(
+    const entries = (selectedUniversity?.gradingScale ?? []).map(
       (item) => [item.grade, item.point] as const
     );
     return new Map(entries);
@@ -71,7 +71,7 @@ export default function CalculatorPage() {
 
   useEffect(() => {
     const allowedGrades = new Set(
-      selectedUniversity.gradingScale.map((scale) => scale.grade)
+      (selectedUniversity?.gradingScale ?? []).map((scale) => scale.grade)
     );
     const currentCourses = getValues("courses");
     currentCourses.forEach((course, index) => {
@@ -85,7 +85,7 @@ export default function CalculatorPage() {
   }, [selectedUniversity, getValues, setValue]);
 
   const gradeOptions = useMemo(
-    () => selectedUniversity.gradingScale.map((item) => item.grade),
+    () => (selectedUniversity?.gradingScale ?? []).map((item) => item.grade),
     [selectedUniversity]
   );
 
@@ -103,8 +103,8 @@ export default function CalculatorPage() {
         includePrevious,
         previousCgpa,
         previousCredits,
-        selectedUniversity.numericRanges,
-        selectedUniversity.rules
+        selectedUniversity?.numericRanges,
+        selectedUniversity?.rules
       ),
     [
       courses,
@@ -112,8 +112,8 @@ export default function CalculatorPage() {
       includePrevious,
       previousCgpa,
       previousCredits,
-      selectedUniversity.numericRanges,
-      selectedUniversity.rules,
+      selectedUniversity?.numericRanges,
+      selectedUniversity?.rules,
     ]
   );
 
@@ -138,7 +138,7 @@ export default function CalculatorPage() {
       cumulativeGpa: cumulativeGpa,
       totalCredits,
       savedAt: new Date(),
-      university: selectedUniversity,
+      university: selectedUniversity as any,
     };
     setLastSnapshot(snapshot);
     const savedTime = snapshot.savedAt.toLocaleTimeString([], {
@@ -146,7 +146,9 @@ export default function CalculatorPage() {
       minute: "2-digit",
     });
     setSaveMessage(
-      `Saved at ${savedTime} for ${selectedUniversity.shortName}.`
+      `Saved at ${savedTime} for ${
+        selectedUniversity?.shortName ?? "selected university"
+      }.`
     );
   };
 
@@ -154,29 +156,35 @@ export default function CalculatorPage() {
     <div className="flex min-h-screen flex-col bg-white">
       <Header />
       <main className="flex-1 bg-white pb-16">
-        <GradingScale
-          universityName={selectedUniversity.name}
-          gradingScale={selectedUniversity.gradingScale}
-        />
         <section className="mx-auto max-w-6xl px-4 pt-10">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,0.9fr)]">
-            <div className="space-y-6">
-              <UniversitySelect
-                universities={universities}
-                selectedId={selectedUniversityId}
-                onSelect={setSelectedUniversityId}
-              />
-              {selectedUniversity.calculationGuide && (
-                <details className="rounded-2xl border border-slate-200 bg-white p-4">
-                  <summary className="cursor-pointer text-sm font-semibold text-slate-800">
-                    Calculation guide
-                  </summary>
-                  <div className="mt-2 text-sm text-slate-600 whitespace-pre-line">
-                    {selectedUniversity.calculationGuide}
-                  </div>
-                </details>
-              )}
-            </div>
+          <div className="space-y-6">
+            <UniversitySelect
+              universities={universities}
+              selectedId={selectedUniversityId}
+              onSelect={setSelectedUniversityId}
+            />
+            {selectedUniversity?.calculationGuide && (
+              <details className="rounded-2xl border border-slate-200 bg-white p-4">
+                <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+                  Calculation guide
+                </summary>
+                <div className="mt-2 text-sm text-slate-600 whitespace-pre-line">
+                  {selectedUniversity.calculationGuide}
+                </div>
+              </details>
+            )}
+          </div>
+        </section>
+
+        <GradingScale
+          universityName={selectedUniversity ? selectedUniversity.name : ""}
+          gradingScale={
+            selectedUniversity ? selectedUniversity.gradingScale : []
+          }
+        />
+
+        <section className="mx-auto max-w-6xl px-4 pt-6">
+          <div className="grid gap-8 lg:grid-cols-2">
             <CourseGrades
               form={form}
               fields={fields}
@@ -224,7 +232,7 @@ export default function CalculatorPage() {
                 <input
                   type="text"
                   placeholder="Your name"
-                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 />
               </div>
               <div>
@@ -234,7 +242,7 @@ export default function CalculatorPage() {
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 />
               </div>
               <div className="sm:col-span-2">
@@ -243,7 +251,7 @@ export default function CalculatorPage() {
                 </label>
                 <textarea
                   placeholder="Please share your suggestions or report issues"
-                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm shadow-sm h-28 resize-none focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                  className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 shadow-sm h-28 resize-none focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 />
               </div>
               <div className="sm:col-span-2">
