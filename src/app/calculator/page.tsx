@@ -185,6 +185,8 @@ export default function CalculatorPage() {
           }
         />
 
+        <GradeToPercentage university={selectedUniversity ?? null} />
+
         <section className="mx-auto max-w-6xl px-4 pt-6">
           <div className="grid gap-8 lg:grid-cols-2">
             <CourseGrades
