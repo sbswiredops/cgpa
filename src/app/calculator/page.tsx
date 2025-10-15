@@ -287,6 +287,12 @@ export default function CalculatorPage() {
             }}
           />
         </section>
+
+        <section className="mx-auto max-w-6xl px-4 pt-6">
+          <ExportShare
+            getData={() => ({ selectedUniversityId, form: getValues(), stats: { currentGpa, cumulativeGpa, totalCredits } })}
+          />
+        </section>
         {/* Suggest Improvements feedback card */}
         <section className="mx-auto max-w-4xl px-4 pt-8">
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
