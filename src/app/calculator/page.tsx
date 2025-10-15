@@ -214,6 +214,10 @@ export default function CalculatorPage() {
             />
           </div>
         </section>
+
+        <section className="mx-auto max-w-6xl px-4 pt-6">
+          <SemesterPlanner university={selectedUniversity ?? null} />
+        </section>
         {/* Suggest Improvements feedback card */}
         <section className="mx-auto max-w-4xl px-4 pt-8">
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
