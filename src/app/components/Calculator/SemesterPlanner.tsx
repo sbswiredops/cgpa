@@ -237,6 +237,67 @@ export default function SemesterPlanner({ university }: SemesterPlannerProps) {
         <p className="mt-1 text-2xl font-semibold text-slate-900">{cumulative.cgpa !== null ? cumulative.cgpa.toFixed(2) : "--"}</p>
         <p className="mt-1 text-sm text-slate-600">Total semester credits considered: {cumulative.credits.toFixed(2)}</p>
       </div>
+
+      {/* Trend chart */}
+      <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p className="text-xs uppercase tracking-wide text-slate-500">Trend</p>
+        <Chart semesters={perSemester} />
+      </div>
     </section>
+  );
+}
+
+function Chart({ semesters }: { semesters: { id: string; name: string; gpa: number | null; credits: number; qualityPoints: number; }[] }) {
+  const pointsGpa = semesters.map((s) => (typeof s.gpa === "number" ? s.gpa : null));
+  let cumQ = 0;
+  let cumC = 0;
+  const pointsCgpa = semesters.map((s) => {
+    if (typeof s.gpa === "number" && s.credits > 0) {
+      cumQ += s.gpa * s.credits;
+      cumC += s.credits;
+    }
+    return cumC > 0 ? cumQ / cumC : null;
+  });
+
+  const series = [pointsGpa, pointsCgpa];
+  const flat = series.flat().filter((v) => typeof v === "number") as number[];
+  const maxY = Math.max(4, ...flat, 0);
+  const minY = Math.min(0, ...flat, 0);
+  const w = 640;
+  const h = 160;
+  const pad = 24;
+  const xFor = (i: number) => pad + (i * (w - 2 * pad)) / Math.max(1, semesters.length - 1);
+  const yFor = (v: number) => h - pad - ((v - minY) / Math.max(1e-6, maxY - minY)) * (h - 2 * pad);
+
+  const pathFor = (vals: (number | null)[]) => {
+    const coords = vals
+      .map((v, i) => (typeof v === "number" ? [xFor(i), yFor(v)] : null))
+      .filter(Boolean) as [number, number][];
+    if (coords.length === 0) return "";
+    return coords.map((p, i) => (i === 0 ? `M ${p[0]},${p[1]}` : `L ${p[0]},${p[1]}`)).join(" ");
+  };
+
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} className="mt-2 h-40 w-full">
+      <rect x={0} y={0} width={w} height={h} fill="transparent" />
+      {/* Axes */}
+      <line x1={pad} y1={h - pad} x2={w - pad} y2={h - pad} stroke="#e2e8f0" />
+      <line x1={pad} y1={pad} x2={pad} y2={h - pad} stroke="#e2e8f0" />
+      {/* GPA line */}
+      <path d={pathFor(pointsGpa)} stroke="#3b82f6" strokeWidth={2} fill="none" />
+      {/* CGPA line */}
+      <path d={pathFor(pointsCgpa)} stroke="#64748b" strokeWidth={2} fill="none" />
+      {/* Points */}
+      {pointsGpa.map((v, i) => (
+        typeof v === "number" ? <circle key={`g${i}`} cx={xFor(i)} cy={yFor(v)} r={3} fill="#3b82f6" /> : null
+      ))}
+      {pointsCgpa.map((v, i) => (
+        typeof v === "number" ? <circle key={`c${i}`} cx={xFor(i)} cy={yFor(v)} r={3} fill="#64748b" /> : null
+      ))}
+      {/* Labels */}
+      {semesters.map((s, i) => (
+        <text key={s.id} x={xFor(i)} y={h - 6} textAnchor="middle" className="fill-slate-500 text-[10px]">{s.name}</text>
+      ))}
+    </svg>
   );
 }
