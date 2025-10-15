@@ -74,6 +74,23 @@ export default function CalculatorPage() {
     return new Map(entries);
   }, [selectedUniversity]);
 
+  // Load shared state from link if present
+  useEffect(() => {
+    try {
+      const search = typeof window !== "undefined" ? window.location.search : "";
+      const s = new URLSearchParams(search).get("s");
+      if (s) {
+        const decoded = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(s)))));
+        if (decoded?.selectedUniversityId) setSelectedUniversityId(decoded.selectedUniversityId);
+        if (decoded?.form) reset(decoded.form);
+      }
+    } catch {
+      // ignore malformed share payloads
+    }
+    // one-time on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const allowedGrades = new Set(
       (selectedUniversity?.gradingScale ?? []).map((scale) => scale.grade)
