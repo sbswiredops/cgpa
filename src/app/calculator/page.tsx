@@ -254,6 +254,21 @@ export default function CalculatorPage() {
             baseCredits={totalCredits}
           />
         </section>
+
+        <section className="mx-auto max-w-6xl px-4 pt-6">
+          <HistoryPanel
+            universities={universities}
+            onLoadSnapshot={(rec: HistoryRecord) => {
+              const selected = universities.find((u) => u.id === rec.universityId);
+              if (selected) setSelectedUniversityId(selected.id);
+              try {
+                const p = rec.payload?.form;
+                if (p) reset(p);
+              } catch {}
+              setSaveMessage(`Loaded snapshot from ${new Date(rec.savedAt).toLocaleString()}.`);
+            }}
+          />
+        </section>
         {/* Suggest Improvements feedback card */}
         <section className="mx-auto max-w-4xl px-4 pt-8">
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
