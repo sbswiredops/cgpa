@@ -12,6 +12,7 @@ import Results from "../components/Calculator/Results";
 import SemesterPlanner from "../components/Calculator/SemesterPlanner";
 import WhatIfTool from "../components/Calculator/WhatIfTool";
 import HistoryPanel, { type HistoryRecord } from "../components/Calculator/HistoryPanel";
+import ExportShare from "../components/Calculator/ExportShare";
 import { universities } from "../data/universities";
 import { computeGpa } from "../../lib/gpa";
 import type {
