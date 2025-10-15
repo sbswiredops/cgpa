@@ -12,8 +12,8 @@ export default function Footer() {
             <Image
               src="/logo.png"
               alt="Bangladesh Private University Hub logo"
-              width={100}
-              height={100}
+              width={180}
+              height={110}
               className="object-contain rounded"
             />
           </div>
