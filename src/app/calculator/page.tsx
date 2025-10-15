@@ -5,6 +5,7 @@ import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import GradingScale from "../components/Calculator/GradingScale";
+import GradeToPercentage from "../components/Calculator/GradeToPercentage";
 import UniversitySelect from "../components/Calculator/UniversitySelect";
 import CourseGrades from "../components/Calculator/CourseGrades";
 import Results from "../components/Calculator/Results";
