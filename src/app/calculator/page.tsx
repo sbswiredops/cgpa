@@ -144,6 +144,29 @@ export default function CalculatorPage() {
       university: selectedUniversity as any,
     };
     setLastSnapshot(snapshot);
+
+    // Persist to localStorage history
+    try {
+      const payload = getValues();
+      const record = {
+        id: Math.random().toString(36).slice(2, 9),
+        savedAt: Date.now(),
+        universityId: selectedUniversityId || "",
+        universityName: selectedUniversity?.name || "Unknown University",
+        summary: `CGPA ${snapshot.cumulativeGpa !== null ? snapshot.cumulativeGpa.toFixed(2) : "--"} · GPA ${snapshot.currentGpa.toFixed(2)} · Credits ${snapshot.totalCredits.toFixed(2)}`,
+        payload: {
+          form: payload,
+          selectedUniversityId,
+        },
+      };
+      const raw = localStorage.getItem("cgpa.history");
+      const arr = raw ? JSON.parse(raw) : [];
+      arr.unshift(record);
+      localStorage.setItem("cgpa.history", JSON.stringify(arr.slice(0, 20)));
+    } catch {
+      // ignore storage errors
+    }
+
     const savedTime = snapshot.savedAt.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
