@@ -274,6 +274,10 @@ export default function CalculatorPage() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 pt-6">
+          <HonorsNotice university={selectedUniversity ?? null} cgpa={cumulativeGpa} />
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 pt-6">
           <HistoryPanel
             universities={universities}
             onLoadSnapshot={(rec: HistoryRecord) => {
