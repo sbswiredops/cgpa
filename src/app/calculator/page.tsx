@@ -5,13 +5,14 @@ import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import GradingScale from "../components/Calculator/GradingScale";
-import GradeToPercentage from "../components/Calculator/GradeToPercentage";
 import UniversitySelect from "../components/Calculator/UniversitySelect";
 import CourseGrades from "../components/Calculator/CourseGrades";
 import Results from "../components/Calculator/Results";
 import SemesterPlanner from "../components/Calculator/SemesterPlanner";
-import WhatIfTool from "../components/Calculator/WhatIfTool";
-import HistoryPanel, { type HistoryRecord } from "../components/Calculator/HistoryPanel";
+// import WhatIfTool from "../components/Calculator/WhatIfTool";
+import HistoryPanel, {
+  type HistoryRecord,
+} from "../components/Calculator/HistoryPanel";
 import ExportShare from "../components/Calculator/ExportShare";
 import HonorsNotice from "../components/Calculator/HonorsNotice";
 import { universities } from "../data/universities";
@@ -78,11 +79,15 @@ export default function CalculatorPage() {
   // Load shared state from link if present
   useEffect(() => {
     try {
-      const search = typeof window !== "undefined" ? window.location.search : "";
+      const search =
+        typeof window !== "undefined" ? window.location.search : "";
       const s = new URLSearchParams(search).get("s");
       if (s) {
-        const decoded = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(s)))));
-        if (decoded?.selectedUniversityId) setSelectedUniversityId(decoded.selectedUniversityId);
+        const decoded = JSON.parse(
+          decodeURIComponent(escape(atob(decodeURIComponent(s))))
+        );
+        if (decoded?.selectedUniversityId)
+          setSelectedUniversityId(decoded.selectedUniversityId);
         if (decoded?.form) reset(decoded.form);
       }
     } catch {
@@ -173,7 +178,13 @@ export default function CalculatorPage() {
         savedAt: Date.now(),
         universityId: selectedUniversityId || "",
         universityName: selectedUniversity?.name || "Unknown University",
-        summary: `CGPA ${snapshot.cumulativeGpa !== null ? snapshot.cumulativeGpa.toFixed(2) : "--"} · GPA ${snapshot.currentGpa.toFixed(2)} · Credits ${snapshot.totalCredits.toFixed(2)}`,
+        summary: `CGPA ${
+          snapshot.cumulativeGpa !== null
+            ? snapshot.cumulativeGpa.toFixed(2)
+            : "--"
+        } · GPA ${snapshot.currentGpa.toFixed(
+          2
+        )} · Credits ${snapshot.totalCredits.toFixed(2)}`,
         payload: {
           form: payload,
           selectedUniversityId,
@@ -229,8 +240,6 @@ export default function CalculatorPage() {
           }
         />
 
-        <GradeToPercentage university={selectedUniversity ?? null} />
-
         <section className="mx-auto max-w-6xl px-4 pt-6">
           <div className="grid gap-8 lg:grid-cols-2">
             <CourseGrades
@@ -266,40 +275,53 @@ export default function CalculatorPage() {
           <SemesterPlanner university={selectedUniversity ?? null} />
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pt-6">
+        {/* <section className="mx-auto max-w-6xl px-4 pt-6">
           <WhatIfTool
             university={selectedUniversity ?? null}
             baseCgpa={cumulativeGpa}
             baseCredits={totalCredits}
           />
-        </section>
+        </section> */}
 
         <section className="mx-auto max-w-6xl px-4 pt-6">
-          <HonorsNotice university={selectedUniversity ?? null} cgpa={cumulativeGpa} />
+          <HonorsNotice
+            university={selectedUniversity ?? null}
+            cgpa={cumulativeGpa}
+          />
         </section>
 
         <section className="mx-auto max-w-6xl px-4 pt-6">
           <HistoryPanel
             universities={universities}
             onLoadSnapshot={(rec: HistoryRecord) => {
-              const selected = universities.find((u) => u.id === rec.universityId);
+              const selected = universities.find(
+                (u) => u.id === rec.universityId
+              );
               if (selected) setSelectedUniversityId(selected.id);
               try {
                 const p = rec.payload?.form;
                 if (p) reset(p);
               } catch {}
-              setSaveMessage(`Loaded snapshot from ${new Date(rec.savedAt).toLocaleString()}.`);
+              setSaveMessage(
+                `Loaded snapshot from ${new Date(
+                  rec.savedAt
+                ).toLocaleString()}.`
+              );
             }}
           />
         </section>
 
         <section className="mx-auto max-w-6xl px-4 pt-6">
           <ExportShare
-            getData={() => ({ selectedUniversityId, form: getValues(), stats: { currentGpa, cumulativeGpa, totalCredits } })}
+            getData={() => ({
+              selectedUniversityId,
+              form: getValues(),
+              stats: { currentGpa, cumulativeGpa, totalCredits },
+            })}
           />
         </section>
         {/* Suggest Improvements feedback card */}
-        <section className="mx-auto max-w-4xl px-4 pt-8">
+        <section className="mx-auto max-w-6xl px-4 pt-8">
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-xl font-semibold text-slate-900">
               Suggest Improvements

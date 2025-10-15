@@ -23,8 +23,8 @@ export default function Header() {
           <Image
             src="/logo.png"
             alt="Bangladesh Private University Hub logo"
-            width={100}
-            height={100}
+            width={180}
+            height={110}
             className="object-contain rounded"
           />
         </Link>
@@ -44,7 +44,7 @@ export default function Header() {
             href="/calculator"
             className="rounded-2xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
           >
-            Calculator
+              Calculator Your CGPA
           </Link>
         </div>
         <button
@@ -75,7 +75,7 @@ export default function Header() {
               className="rounded-2xl bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
               onClick={closeMenu}
             >
-              Calculator
+              Calculator Your CGPA
             </Link>
           </nav>
         </div>

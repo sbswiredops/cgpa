@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { qsUniversities } from "../data/qs-ranking";
+import Image from "next/image";
 
 export default function QSRanking() {
   const featured = qsUniversities.slice(0, 8);
@@ -16,7 +17,9 @@ export default function QSRanking() {
               Explore QS profiles of top private universities
             </h2>
             <p className="mt-2 max-w-2xl text-base text-slate-600">
-              View official QS profiles to learn about global standing, subject rankings, and methodology. Links open on the QS TopUniversities website.
+              View official QS profiles to learn about global standing, subject
+              rankings, and methodology. Links open on the QS TopUniversities
+              website.
             </p>
           </div>
           <Link
@@ -33,12 +36,31 @@ export default function QSRanking() {
               key={u.id}
               className="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
             >
+              <div className="flex items-center justify-center">
+                <div className="relative h-20 w-20 overflow-hidden">
+                  {u.imageUrl ? (
+                    <Image
+                      src={u.imageUrl}
+                      alt={u.name}
+                      width={80}
+                      height={80}
+                      className="object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-20 w-20 items-center justify-center text-sm font-semibold text-blue-700">
+                      {u.shortName}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div>
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
+                  {/* <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
                     {u.shortName}
-                  </div>
-                  <h3 className="text-lg font-semibold text-slate-900">{u.name}</h3>
+                  </div> */}
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    {u.name}
+                  </h3>
                 </div>
                 <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
                   <span className="h-2 w-2 rounded-full bg-blue-500" />
