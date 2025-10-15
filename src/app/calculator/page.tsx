@@ -9,6 +9,7 @@ import UniversitySelect from "../components/Calculator/UniversitySelect";
 import CourseGrades from "../components/Calculator/CourseGrades";
 import Results from "../components/Calculator/Results";
 import SemesterPlanner from "../components/Calculator/SemesterPlanner";
+import WhatIfTool from "../components/Calculator/WhatIfTool";
 import { universities } from "../data/universities";
 import { computeGpa } from "../../lib/gpa";
 import type {
