@@ -15,11 +15,10 @@ export default function UniversitySelect({
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
+    const base = [...universities].sort((a, b) => a.name.localeCompare(b.name));
     const q = search.trim().toLowerCase();
-    if (!q) return universities;
-    return universities.filter((u) =>
-      `${u.name} ${u.shortName}`.toLowerCase().includes(q)
-    );
+    if (!q) return base;
+    return base.filter((u) => `${u.name} ${u.shortName}`.toLowerCase().includes(q));
   }, [search, universities]);
 
   return (
