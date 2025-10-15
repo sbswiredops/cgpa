@@ -48,7 +48,7 @@ export default function CourseGrades({
       <h2 className="text-lg font-semibold text-slate-900">Course Grades</h2>
       <p className="mt-2 text-sm text-slate-500">
         Enter each course’s credit hours and grade to calculate your semester
-        GPA.
+        CGPA.
       </p>
 
       {gradeOptions.length === 0 && (
